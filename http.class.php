@@ -65,9 +65,10 @@
 			
 		/**
 		 * 写主体信息
+		 * @param {Array} $body 设置body信息
 		 */	
-		protected function setBody() {
-			
+		protected function setBody( $body ) {
+			$this->body[] = http_build_query($body);			
 		} 
 		
 		/**
@@ -99,11 +100,13 @@
 		
 		/**
 		 * 请求get数据
+		 * 请求POST数据
 		 */
 		public function request() {
 			// 拼接请求信息
 			$req = array_merge($this->line, $this->header, array(''), $this->body, array(''));
 			$req = implode(self::CRLF, $req);
+			echo $req;
 			
 			// 写
 			fwrite($this->fh, $req);
@@ -112,15 +115,37 @@
 			while ( !feof($this->fh) ) {
 				$this->response .= fread($this->fh, 1024); 
 			}
-			
 			// 关闭连接
 			$this->close();
 		} 
 		
 		/**
 		 * 构造post查询
+		 * @param {Array} $body body 的信息
+		 * 	 
 		 */
-		public function post() {
+		/**
+		 * POST / HTTP/1.1
+				Host: linxingzhang.com
+				Content-type: application/x-www-form-urlencoded
+				Content-length: 20
+				username=chenhaizhen
+		 */ 
+		 
+		public function post( $body=array() ) {
+			
+			// 设置请求行
+			$this->setLine('POST');
+			
+			// 构造主体信息
+			$this->setBody($body);
+			
+			// 设置 Content-type 和  计算Content-length
+			$this->setHeader('Content-type: application/x-www-form-urlencoded');
+			$this->setHeader('Content-length: ' . strlen($this->body[0]));
+			
+			$this->request();
+			return $this->response;
 			
 		} 
 		
@@ -134,9 +159,10 @@
 	}
 
 //	$url = 'http://luqi.baijia.baidu.com/article/719576';
-//	$http = new Http($url);
-//	 
+	$url = 'http://www.linxingzhang.com/index.php';
+	$http = new Http($url);
 //	echo $http->get();
+	$http->post(array('tit' => 'xixi', 'con' => 'pink'));
 	
 	
 ?>

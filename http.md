@@ -147,4 +147,11 @@ header('Location: http://www.sf.gg', true, 301); // 301 重定向  // 永久重�
 # socket编程发送GET请求
 
 
+**telnet post**
+```
+POST /github/http/test.php HTTP/1.1
+Host: www.muchai.com
+Content-type: application/x-www-form-urlencoded
+Content-length: 10
+```
 
