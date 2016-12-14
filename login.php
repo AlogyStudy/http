@@ -52,15 +52,14 @@
 		 * @param {Stinrg} $method 请求方法 默认GET
 		 */
 		protected function setLine( $method ) {
-			$this->line[0] = $method . '  ' . $this->urlInfo['path'] . '?' . $this->url['query'] . ' ' . $this->version;
+			$this->line[0] = $method . '  ' . $this->urlInfo['path'] . ' ' . $this->version;
 		}
 		
 		/**
 		 * 声明头信息
 		 * @param {String} $headerline 头信息
-		 * @exp 
 		 */
-		public function setHeader( $headerline ) {
+		protected function setHeader( $headerline ) {
 			$this->header[] = $headerline; 
 		}
 			
@@ -138,8 +137,8 @@
 			$this->setHeader('Content-length: ' . strlen($this->body[0]));
 			
 			$this->request();
-			
 			return $this->response;
+			
 		} 
 		
 		/**
@@ -151,12 +150,7 @@
 		
 	}
 
-//	set_time_limit(0); // 设置脚本最大执行时间
-
-//	$url = 'http://luqi.baijia.baidu.com/article/719576';
-//	$url = 'http://www.linxingzhang.com/index.php';
-//	$http = new Http($url);
-//	echo $http->get();
-//	echo $http->post(array('tit' => 'xixi', 'con' => 'pink'));
+	set_time_limit(0); // 设置脚本最大执行时间
+	
 	
 ?>
