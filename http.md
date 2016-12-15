@@ -324,6 +324,46 @@ Content-length: 10
 
 # http协议模拟登陆发帖
 
+> 网站统计
+
+网站统计结果，如何知道用户从那些渠道中进入本网站?
+统计时，是如何得知用户从哪儿来到本网站?
 
 
+在HTTP协议中，头信息里，有一个重要的选项：referer 
+referer：代表网页的来源，即上一页的地址.
+如果直接在浏览器地址栏上输入，进入网页，则没有referer头.
 
+
+> 如何配置apache服务器用于图片防盗链
+
+原理：在web服务器层面，根据http协议的referer头信息来判断。如果来自站外，则统一重写到一个很小的防盗链提醒的图片上.(url重写)
+
+1. apache重写模块 `mod_rewrite`。(打开mod_rewrite.so)
+```
+LoadModule rewrite_module modules/mod_rewrite.so
+```
+	开启后，支持重写模块.
+2. 在需要防盗的网站或目录，写`.htaccess`文件，并指定防盗链规则.
+	如何指定，分析referer，如果不是来自本站，从写url.
+
+
+> 重写规则
+
+那种情况重写:	
+	是jpeg/jpg/git/png图片时.
+	是referer头信息与localhost不匹配时重写.
+	
+> 如何重写
+
+统一rewirte 到 某个防盗链图片.
+
+[mod_rewrite](http://www.php100.com/manual/apache2/mod/mod_rewrite.html)	
+
+`.hatccess`文件：		
+```
+RewriteEngine On
+RewriteCond %{REQUEST_FILENAME} .*\.(jpg|jpeg|git|png) [NC]
+RewriteCond %{HTTP_REFERER} !muchai.com [NC]
+RewriteRule .* http://linxingzhang.com/blog/img/weixin.jpg 
+```

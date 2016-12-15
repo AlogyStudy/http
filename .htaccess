@@ -1,0 +1,4 @@
+RewriteEngine On
+RewriteCond %{REQUEST_FILENAME} .*\.(jpg|jpeg|git|png) [NC]
+RewriteCond %{HTTP_REFERER} !muchai.com [NC]
+RewriteRule .* http://linxingzhang.com/blog/img/weixin.jpg 
