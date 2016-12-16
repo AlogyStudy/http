@@ -367,3 +367,18 @@ RewriteCond %{REQUEST_FILENAME} .*\.(jpg|jpeg|git|png) [NC]
 RewriteCond %{HTTP_REFERER} !muchai.com [NC]
 RewriteRule .* http://linxingzhang.com/blog/img/weixin.jpg 
 ```
+
+> 采集
+
+模拟`referer`中的信息来请求数据.
+
+```
+$http = new Http('http://linxingzhang.com/blog/img/weixin.jpg');
+
+$http->setHeader('Referer: http://www.muchai.com');
+$res = $http->get();
+
+file_put_contents('./xixi.jpg', substr(strstr($res, "\r\n\r\n"), 4));
+```
+
+

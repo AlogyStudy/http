@@ -52,7 +52,7 @@
 		 * @param {Stinrg} $method 请求方法 默认GET
 		 */
 		protected function setLine( $method ) {
-			$this->line[0] = $method . '  ' . $this->urlInfo['path'] . '?' . $this->url['query'] . ' ' . $this->version;
+			$this->line[0] = $method . '  ' . $this->urlInfo['path'] . '?' . $this->urlInfo['query'] . ' ' . $this->version;
 		}
 		
 		/**
@@ -81,7 +81,10 @@
 			$this->urlInfo = parse_url($url);
 			
 			// 判断端口
-			$this->urlInfo['port'] = isset($this->urlInfo['port']) && $this->urlInfo['port'] == 80 ? $this->urlInfo['port'] : 80; 
+			$this->urlInfo['port'] = isset($this->urlInfo['port']) && $this->urlInfo['port'] == 80 ? $this->urlInfo['port'] : 80;
+			
+			// 判断query
+			$this->urlInfo['query'] = isset($this->urlInfo['query']) ? $this->urlInfo['query'] : '';  
 			
 			// 连接
 			$this->fh = fsockopen($this->urlInfo['host'], $this->urlInfo['port'], $this->errno, $this->errstr, 3);
