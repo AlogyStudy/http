@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<link rel="stylesheet" type="text/css" href="a.css"/>
+	</head>
+	<body>
+		
+		<h1>投票</h1>
+		
+		<p>
+			<img src="mayday.jpg" width="500" />
+		</p>
+		
+		
+		<p>
+			<button onclick="fn()">投票1</button>
+			<a href="vote.php" >投票2</a>
+		</p>
+		
+		
+		<script type="text/javascript">
+			
+			var oBody = document.getElementsByTagName('body')[0];
+			
+			function fn() {
+				var oImg = document.createElement('img');
+				oImg.src = 'vote.php';
+				oImg.style.display = 'none';
+				
+//				oBody.appendChild(oImg);
+			}
+			
+		</script>
+		
+		<!--<script src="" type="text/javascript" charset="utf-8"></script>
+		<link rel="stylesheet" type="text/css" href=""/>
+		<a href=""></a>
+		<iframe src="" width="" height=""></iframe>
+		<img src=""/>-->
+		
+		
+	</body>
+</html>

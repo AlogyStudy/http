@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+		
+		<script type="text/javascript">
+			
+			function createXHR() {
+				var xhr = null;
+				
+				if ( window.ActiveXObject ) {
+					xhr = new window.ActiveXObject();
+				} else if ( XMLHttpRequest ) {
+					xhr = new XMLHttpRequest('Microsoft.XMLHTTP');
+				}
+				return xhr;
+			}
+			
+			
+			function vote() {
+				// 1. 创建XHR
+				var xhr = createXHR();
+				
+				if ( xhr != null ) {
+					
+					// 2. 打开链接
+					// 'GET', './vote.php', true
+					xhr.open('GET', './vote.php', true);
+					
+					// 发送请求
+					xhr.send(null);
+					
+				}
+				
+			}
+			
+		</script>
+		
+		
+		<img src="mayday.jpg" width="400" />
+		
+		<button onclick="vote()">投票</button>
+		
+	</body>
+</html>

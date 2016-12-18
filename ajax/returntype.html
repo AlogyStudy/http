@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+		
+		<input type="button" name="" id="" value="test1" onclick="test1()" />
+		<input type="button" name="" id="" value="test2" onclick="test2()" />
+		
+		
+		<script type="text/javascript">
+		
+			function createXHR() {
+				var xhr = null;
+				
+				if ( window.ActiveXObject ) {
+					xhr = new window.ActiveXObject();
+				} else if ( XMLHttpRequest ) {
+					xhr = new XMLHttpRequest('Microsoft.XMLHTTP');
+				}
+				return xhr;
+			}
+			
+			// xml
+			function test1() {
+				
+				var xhr = createXHR();
+				
+				xhr.open('GET', './returntype.php', true);
+				
+				xhr.onreadystatechange = function () {
+					if ( this.readyState == 4 ) {
+						var xmldom = this.responseXML;
+						console.log( xmldom );
+					}
+				}
+						
+				xhr.send(null);		
+			}
+			
+			function test2() {
+
+				var xhr = createXHR();
+				
+				xhr.open('GET', './returnhtml.php', true);
+				
+				
+
+			}
+			
+		</script>
+	</body>
+</html>

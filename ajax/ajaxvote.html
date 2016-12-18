@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+		
+		<script type="text/javascript">
+			
+			function createXHR() {
+				var xhr = null;
+				
+				if ( window.ActiveXObject ) {
+					xhr = new window.ActiveXObject();
+				} else if ( XMLHttpRequest ) {
+					xhr = new XMLHttpRequest('Microsoft.XMLHTTP');
+				}
+				return xhr;
+			}
+			
+			
+			function vote() {
+				// 1. 创建XHR
+				var xhr = createXHR();
+				
+				if ( xhr != null ) {
+					
+					// 2. 打开链接
+					// 'GET', './vote.php', true
+					xhr.open('GET', './vote02.php', true);
+					
+					// 3. 发送请求
+					xhr.send(null);
+					
+					// 绑定监听事件
+					xhr.onreadystatechange = function () {
+						if ( xhr.readyState == 4 ) {
+							console.log(xhr.responseText);
+						var oPg = document.getElementById("progress")
+							if ( xhr.responseText == 1 ) {
+								oPg.innerHTML = '成功';								
+							} else if ( xhr.responseText == 0 ) {
+								oPg.innerHTML = '失败';
+							} else {
+								oPg.innerHTML = xhr.responseBody;
+							}
+						}
+//						oPg.innerHTML += oPg.innerHTML + '状态变成：' + xhr.readyState + '<br />'; 
+					}
+					
+					// 4. 如何获得
+//					alert(xhr.responseText);
+					
+				}
+				
+			}
+			
+		</script>
+		
+		
+		<div id="progress"></div>
+		
+		<img src="mayday.jpg" width="400" />
+		
+		<button onclick="vote()">投票</button>
+		
+	</body>
+</html>
