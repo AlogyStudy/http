@@ -8,6 +8,7 @@
 		
 		<input type="button" name="" id="" value="test1" onclick="test1()" />
 		<input type="button" name="" id="" value="test2" onclick="test2()" />
+		<input type="button" name="" id="" value="test3" onclick="test3()" />
 		
 		
 		<script type="text/javascript">
@@ -40,14 +41,39 @@
 				xhr.send(null);		
 			}
 			
+			// 返回普通文本的html代码字符串
 			function test2() {
 
 				var xhr = createXHR();
 				
 				xhr.open('GET', './returnhtml.php', true);
 				
+				xhr.onreadystatechange = function () {
+					
+					if ( this.readyState == 4 ) {
+						console.log( this.responseText );
+					}
+					
+				}
 				
+				xhr.send(null);
 
+			}
+			
+			// json格式字符串对象
+			function test3() {
+				var xhr = createXHR();
+				xhr.open('GET', './returnjson.php', true);
+				
+				xhr.onreadystatechange = function () {
+					
+					if ( this.readyState == 4 ) {
+						console.log( this.responseText );
+					}
+					
+				}
+				
+				xhr.send(null);
 			}
 			
 		</script>

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+		
+		
+		
+		<input type="file" name="pic" onchange="selfile()" />
+		
+		<button onclick="">selfile</button>
+		
+		<div id="debug"></div>
+		
+		
+		<script type="text/javascript">
+			
+			// 进度条： 总大小， 已上传大小
+			// 解决：在HTML5中，有一个"上传过程"的事件(onprogress),事件中，可以读取到当前两个信息.
+			// 思路：在上传过程中，不断触发函数，读取(已上传/总大小)，更新页面数据。
+		
+			/**
+			 * file文件上传
+			 */
+			function selfile() {
+				
+				// 创建FromData对象
+				var fd = new FormData();
+				
+				// 获取文件对象
+				var pic = document.getElementsByTagName('input')[0].files[0];
+				
+				// 把获取的文件对象追加到表单数据中.
+				fd.append('pic', pic);
+//				fd.pic = pic;
+				console.log( fd, 'fd' );
+				
+				// AJAX
+				var xhr = new XMLHttpRequest();
+				
+				xhr.open('POST', 'upfile.php', true);
+				
+				xhr.onreadystatechange = function () {
+					
+					if ( xhr.readyState == 4 ) {
+						document.getElementById("debug").innerHTML = xhr.responseText;
+					}
+					
+				}
+				
+				xhr.send(fd);
+				
+			}
+		
+		</script>
+	</body>
+</html>

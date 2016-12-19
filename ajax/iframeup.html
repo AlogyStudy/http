@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+		
+		<script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+		
+		<form action="up.php" method="post" enctype="multipart/form-data">
+			
+			<p>
+				<input type="file" name="pic" id="" value=""/>
+			</p>
+			<p>
+				<input type="submit" value="iframeUpLoad" />
+			</p>
+		</form>
+		
+		<div id="msg"></div>
+		
+		<script type="text/javascript">
+			
+			/**
+			 * 1. 扑捉表单提交动作
+			 * 2. 创建一个iframe
+			 * 3. 把表单的target修改 指向 该 iframe
+			 * 4. 销毁iframe
+			 */
+			
+			$('form').submit(function () {
+				var upName = 'up' + Math.random(); 
+				$('<iframe>').attr('name', upName).css('display', 'none').appendTo($('body'));
+				$(this).attr('target', upName);
+				
+				// 进度条
+				$('#msg').html('<img src="./load.gif" />');
+			});
+			
+		</script>
+		
+		
+	</body>
+</html>
