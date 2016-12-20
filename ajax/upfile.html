@@ -3,17 +3,32 @@
 	<head>
 		<meta charset="UTF-8">
 		<title></title>
+		<style type="text/css">
+			#debug {
+				margin-top: 10px;
+				width: 400px;
+				height: 25px;
+				border: 1px solid green;
+				position: relative;
+			}
+			#progress {
+				position: absolute;
+				width: 0%;
+				height: 100%;
+				background: green;
+			}
+		</style>
 	</head>
 	<body>
 		
 		
 		
-		<input type="file" name="pic" onchange="selfile()" />
+		<input type="file" name="pic" />
 		
-		<button onclick="">selfile</button>
+		<button onclick="selfile()">selfile</button>
 		
-		<div id="debug"></div>
-		
+		<div id="debug" style="width: 400px;"><div id="progress"></div></div>
+		<div id="msg"></div>
 		
 		<script type="text/javascript">
 			
@@ -35,7 +50,6 @@
 				// 把获取的文件对象追加到表单数据中.
 				fd.append('pic', pic);
 //				fd.pic = pic;
-				console.log( fd, 'fd' );
 				
 				// AJAX
 				var xhr = new XMLHttpRequest();
@@ -45,7 +59,26 @@
 				xhr.onreadystatechange = function () {
 					
 					if ( xhr.readyState == 4 ) {
+						document.getElementById("debug").style.textAlign = 'center';
+						document.getElementById("debug").style.lineHeight = '25px';
+						
 						document.getElementById("debug").innerHTML = xhr.responseText;
+					}
+					
+				}
+				
+				xhr.upload.onprogress = function ( ev ) {
+					
+					// 长度是否可以计算. (区分：分块上传) 
+					if ( ev.lengthComputable ) {
+						// 当前已经上传多少/总共多少
+						var percent = 100 * ev.loaded / ev.total;
+						
+						var FileW = percent.toFixed(2);
+						
+						document.getElementById("msg").innerHTML = FileW + '%'; 
+						document.getElementById('progress').style.width = FileW  + '%';
+						
 					}
 					
 				}
