@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style type="text/css">
+			#progress {
+				margin-top: 20px;
+				width: 500px;
+				height: 25px;
+				border: 1px solid greenyellow;
+			}
+			#msg {
+				width: 0;
+				height: 25px;
+				background: greenyellow;
+			}
+		</style>
+	</head>
+	<body>
+		
+		<input type="file" name="pic" id="pic" /><br /><br />
+		<button onclick="sendFile()">大文件切割上传</button>
+		<div id="progress">
+			<div id="msg"></div>
+		</div>
+	
+		<script type="text/javascript">
+			/**
+			 * 使用的API
+			 * file --> Blob
+			 * Blob有slice, 可以截取二进制对象的一部分.
+			 */
+			
+			/**
+			 * 思路：
+			 * 截取10M，上传
+			 * 判断文件是否截取完毕
+			 * 
+			 * while( 存在数据 ) { // 截取， 上传 }
+			 */
+				
+			/**
+			 * 上传文件
+			 */
+			function sendFile() {
+				
+				const LENGTH = 10 * 1024 * 1024; // 一次性截取长度
+				var start = 0; // 从哪里开始截取
+				var end = start + LENGTH // 到哪边截至
+				
+				var blob = new Blob();
+				var fd = null;
+				
+				// XHR对象
+				var xhr = null;
+				
+				// 获取总的文件大小
+				var pic = document.getElementById("pic").files[0];
+				var totalSize = pic.size;
+				
+				while ( start < totalSize ) {
+					
+					// 截取文件
+					blob = pic.slice(start, end);
+					
+					fd = new FormData();
+//					fd.append('part', blob);
+					fd.part = blob;
+					
+					// xml对象
+					xhr = new XMLHttpRequest();
+					xhr.open('POST', 'sliceup.php', false);
+					
+					xhr.upload.onprogress = function () {
+						console.log( 'okkkkkkkk' );	
+					}
+					
+					// 发送请求
+					xhr.send(fd);
+					
+					start = end;
+					end = start + LENGTH;
+					
+				}
+				
+				
+			}
+			
+			/**
+			 * @param {Object} options 上传参数
+			 * @param {type} data 上传数据
+			 */
+			function upFile( options, data ) {
+				
+				// 当前是否存在文件
+				if ( !data ) {
+					return false;
+				}
+				
+				var type = options.type.toUpperCase() || 'GET';
+				var url = options.url || '';
+				var async = options.async || true;
+				
+				var xhr = new XMLHttpRequest();
+				
+				xhr.open(type, url, async);
+				
+				xhr.upload.onprogress = function () {
+						
+				}
+				
+				xhr.send();
+				
+			}
+			
+		</script>
+		
+	</body>
+</html>
