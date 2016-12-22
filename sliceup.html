@@ -70,10 +70,11 @@
 					
 					// xml对象
 					xhr = new XMLHttpRequest();
-					xhr.open('POST', 'sliceup.php', false);
+					xhr.open('POST', 'sliceup.php', true);
 					
-					xhr.upload.onprogress = function () {
-						console.log( 'okkkkkkkk' );	
+					xhr.upload.onprogress = function ( ev ) {
+						var percent = 100 * (start + ev.onloaded) / totalSize;
+						document.getElementById("msg").style.width = percent + '%'; 
 					}
 					
 					// 发送请求
