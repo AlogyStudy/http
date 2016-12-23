@@ -58,6 +58,7 @@
 				// 获取总的文件大小
 				var pic = document.getElementById("pic").files[0];
 				var totalSize = pic.size;
+				var percent = 0;
 				
 				while ( start < totalSize ) {
 					
@@ -73,8 +74,6 @@
 					xhr.open('POST', 'sliceup.php', true);
 					
 					xhr.upload.onprogress = function ( ev ) {
-						var percent = 100 * (start + ev.onloaded) / totalSize;
-						document.getElementById("msg").style.width = percent + '%'; 
 					}
 					
 					// 发送请求
@@ -82,6 +81,12 @@
 					
 					start = end;
 					end = start + LENGTH;
+					
+					percent += 100 * end / totalSize;
+					if ( percent > 100 ) {
+						percent = 100;
+					}
+					document.getElementById("msg").style.width = percent + '%'; 
 					
 				}
 				
