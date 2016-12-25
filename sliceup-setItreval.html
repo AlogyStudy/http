@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style type="text/css">
+			#progress {
+				margin-top: 20px;
+				width: 500px;
+				height: 25px;
+				border: 1px solid greenyellow;
+			}
+			#msg {
+				width: 0;
+				height: 25px;
+				background: greenyellow;
+			}
+		</style>
+	</head>
+	<body>
+		
+		<input type="file" name="pic" id="pic" /><br /><br />
+		<button onclick="file()">大文件切割上传</button>
+		<div id="progress">
+			<div id="msg"></div>
+		</div>
+	
+		<script type="text/javascript">
+			/**
+			 * 使用的API
+			 * file --> Blob
+			 * Blob有slice, 可以截取二进制对象的一部分.
+			 */
+			
+			/**
+			 * 思路：
+			 * 截取10M，上传
+			 * 判断文件是否截取完毕
+			 * 
+			 * while( 存在数据 ) { // 截取， 上传 }
+			 */
+				
+			var xhr = new XMLHttpRequest();
+			var timer = null;
+			/**
+			 * 上传文件
+			 */
+			
+			function file() {
+				timer = setInterval(sendFile, 1000);	
+			}
+			
+			// 每个一秒执行产生的问题
+			// 在一秒内，没有上传完成.
+			// 下一次的
+			var sendFile = (function () {
+				
+				const LENGTH = 10 * 1024 * 1024; // 一次性截取长度
+				var start = 0; // 从哪里开始截取
+				var end = start + LENGTH // 到哪边截至
+				var sending = true; // 上一块是否发送完毕
+				var blob = null;
+				var fd = null;
+			
+				// 百分比
+				var percent = 0;
+					
+				return function () {
+					
+					if (sending == true) {
+						return false;
+					}
+					var file = document.getElementById("pic").files[0];
+					
+					if ( start > file.size ) {
+						clearInterval(timer);
+						return false;
+					}
+					
+					blob = file.slice(start, end);
+					
+					fd = new FormData();
+					fd.append('part', blob);
+					
+					// 上传
+					up(fd);
+					
+					start = end;
+					end = start + LENGTH;
+					
+					sending = false;
+					
+					percent = 100 * end / file.size;
+					if ( percent > 100 ) {
+						percent = 100;
+					}
+					document.getElementById("msg").style.width = percent + '%'; 
+				}
+				
+			})();
+			
+			/**
+			 * 上传文件
+			 * @param {} fd
+			 */
+			function up( fd ) {
+				xhr.open('POST', 'sliceup.php', true);
+				xhr.send(fd);
+			}
+			
+		</script>
+		
+	</body>
+</html>
