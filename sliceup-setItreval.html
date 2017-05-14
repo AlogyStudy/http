@@ -36,8 +36,6 @@
 			 * 思路：
 			 * 截取10M，上传
 			 * 判断文件是否截取完毕
-			 * 
-			 * while( 存在数据 ) { // 截取， 上传 }
 			 */
 				
 			var xhr = new XMLHttpRequest();
@@ -51,8 +49,7 @@
 			}
 			
 			// 每个一秒执行产生的问题
-			// 在一秒内，没有上传完成.
-			// 下一次的
+			// 在一秒内，没有上传完成
 			var sendFile = (function () {
 				
 				const LENGTH = 10 * 1024 * 1024; // 一次性截取长度
@@ -90,6 +87,7 @@
 					
 					sending = false;
 					
+					// 进度条
 					percent = 100 * end / file.size;
 					if ( percent > 100 ) {
 						percent = 100;
